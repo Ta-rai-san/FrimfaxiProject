@@ -5,11 +5,6 @@
 ;-------------------------------------------------------------------------------
 [BITS 16]
 ORG 0x7C00
-
-%include "Print.inc"
-
-msgphello		DB 0x0D, 0x0A, "Hello", 0x0D, 0x0A, 0x00
-
 ;==================================================================================
 ; BIOS parameter blocks(FAT12)
 ;==================================================================================
@@ -36,13 +31,19 @@ BS_VolID	DD	0x20202020	;VolumeSerialNumber 日付を入れました
 BS_VolLab	DB	"MyOS       "	;VolumeLabel
 BS_FilSysType	DB	"FAT12   "	;FileSystemType
 
+%include "Print.inc"
+
 BOOT:
 ImageName		DB "I am Frimfaxi. ver1.0", 0x00
 MOV	SI, ImageName
 CALL	DisplayMessage
-CALL	Adin
-CLI
+PUSH	WORD [ES_IMAGE_ADDR]	; ここを追加します。ES_IMAGE_ADDRは0x0050
+PUSH	WORD 0x0000		; ここを追加します
+RETF				; ここを追加します
+
 HLT
+
+ES_IMAGE_ADDR DW 0x0050
 
 TIMES 510 - ($ - $$) DB 0
 DW 0xAA55
