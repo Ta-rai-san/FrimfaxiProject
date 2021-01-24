@@ -34,12 +34,12 @@ BS_FilSysType	DB	"FAT12   "	;FileSystemType
 %include "Print.inc"
 
 BOOT:
-ImageName		DB "I am Frimfaxi. ver1.0", 0x00
+ImageName		DB "Frimfaxi 1.0", 0x00
 MOV	SI, ImageName
 CALL	DisplayMessage
-PUSH	WORD [ES_IMAGE_ADDR]	; ここを追加します。ES_IMAGE_ADDRは0x0050
-PUSH	WORD 0x0000		; ここを追加します
-RETF				; ここを追加します
+PUSH	WORD [ES_IMAGE_ADDR]	
+PUSH	WORD 0x0000		
+RETF				
 
 HLT
 
